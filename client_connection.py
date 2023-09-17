@@ -29,6 +29,8 @@ class ClientConnection(basic.LineReceiver):
 
     def connectionLost(self, reason):
         self.broadcastPlayerLeft()
+        if self.session is not None:
+            self.session.endSession()
         self.factory.clients.pop(id(self))
 
     def kickWithError(self, reason, keep_connection=False):
