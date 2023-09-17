@@ -3,7 +3,7 @@ from xml_functions import makeXMLLine
 
 class GameSession:
     turn_time = "100000"
-    number_of_levels = 1
+    number_of_levels = 12
 
     def __init__(self, starter, opponent):
         self.current_level = 1
