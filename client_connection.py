@@ -18,19 +18,24 @@ class ClientConnection(basic.LineReceiver):
         self.hitNumber = 0
 
     def authme(self, username):
-        self.username = username
-        self.factory.conn_ids[username] = id(self)
-        self.authed = True
-        self.sendUserList()
-        self.broadcastNewPlayer()
+        if username in self.factory.conn_ids.keys():
+            self.kickWithError(f"Inny gracz już używa nicka {username}.\nSpróbuj dołączyć z innym nickiem.")
+        else:
+            print("join")
+            self.username = username
+            self.factory.conn_ids[username] = id(self)
+            self.authed = True
+            self.sendUserList()
+            self.broadcastNewPlayer()
 
     def connectionMade(self):
         self.factory.clients[id(self)] = self
 
     def connectionLost(self, reason):
-        self.broadcastPlayerLeft()
-        if self.session is not None:
-            self.session.endSession()
+        if self.authed:
+            self.broadcastPlayerLeft()
+            if self.session is not None:
+                self.session.endSession()
         self.factory.clients.pop(id(self))
 
     def kickWithError(self, reason, keep_connection=False):
