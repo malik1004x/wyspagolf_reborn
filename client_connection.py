@@ -35,6 +35,7 @@ class ClientConnection(basic.LineReceiver):
             self.broadcastPlayerLeft()
             if self.session is not None:
                 self.session.endSession()
+            self.factory.conn_ids.pop(self.username)
         self.factory.clients.pop(id(self))
 
     def kickWithError(self, reason, keep_connection=False):
