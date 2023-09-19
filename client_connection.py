@@ -59,8 +59,16 @@ class ClientConnection(basic.LineReceiver):
 
     def sendUserList(self):
         # print("sending user list")
-        player_list = [makeXMLLine("player", params={"name": client.username, "skill": "1000", "state": "0"})
-                       for client in self.factory.clients.values()]
+        player_list = []
+        for client in self.factory.clients.values():
+            name = client.username
+            if client.session is None:
+                state = "0"  # available to play
+            else:
+                state = "3"  # currently in-game
+            player_list.append(
+                makeXMLLine("player", {"name": name, "state": state})
+            )
         self.sendLine(
             makeXMLWithContent(
                 command="userList",
