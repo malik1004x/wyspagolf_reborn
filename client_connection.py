@@ -21,7 +21,6 @@ class ClientConnection(basic.LineReceiver):
         if username in self.factory.conn_ids.keys():
             self.kickWithError(f"Inny gracz już używa nicka {username}.\nSpróbuj dołączyć z innym nickiem.")
         else:
-            print("join")
             self.username = username
             self.factory.conn_ids[username] = id(self)
             self.authed = True
@@ -251,4 +250,3 @@ class ClientConnection(basic.LineReceiver):
             case _:
                 self.sendLine("not implemented :(".encode("utf-8"))
                 self.factory.log.warn("client sent unimplemented")
-                print(line_str)
